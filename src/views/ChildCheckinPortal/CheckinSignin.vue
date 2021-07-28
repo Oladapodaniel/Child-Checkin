@@ -21,31 +21,35 @@
                             <button class="btn text-white signup-btn font-weight-bold w-100 mt-3" @click="toggleSignUp" v-if="!showLogIn && !showSignUp">Sign Up</button>
                         </div>
                     </div>
-                    <form @submit.prevent="logIn" class="row justify-content-center mb-3" v-if="showLogIn">
-                        <div class="col-10" v-if="errorMessage">
-                            <div class="error-div">
-                                <p class="error-message">{{ errorMessage }}</p>
+                    <transition name="move" mode="out-in">
+                        <form @submit.prevent="logIn" class="row justify-content-center mb-3" v-if="showLogIn">
+                            <div class="col-10" v-if="errorMessage">
+                                <div class="error-div">
+                                    <p class="error-message">{{ errorMessage }}</p>
+                                </div>
                             </div>
-                        </div>
-                
-                        <div class="col-10 form-group">
-                            <label class="font-weight-bold ">Phone Number</label>
-                            <input type="text" class=" form-control all-input " v-model="username" placeholder="Enter phone number">
-                        </div>
                     
-                        <div class="col-10">
-                            <label class="font-weight-bold"> Password </label>
-                            <input type="password" class=" form-control all-input" v-model="userDetails.password" placeholder="Enter password">
-                            <div class="mt-1">Must be six character long</div>
+                            <div class="col-10 form-group">
+                                <label class="font-weight-bold ">Phone Number</label>
+                                <input type="text" class=" form-control all-input " v-model="username" placeholder="Enter phone number">
+                            </div>
+                        
+                            <div class="col-10">
+                                <label class="font-weight-bold"> Password </label>
+                                <input type="password" class=" form-control all-input" v-model="userDetails.password" placeholder="Enter password">
+                                <div class="mt-1">Must be six character long</div>
+                            </div>
+                            <div class="col-10 mt-2 text-primary">
+                                <router-link :to="{ name: 'ForgotPassword', params: { tenantId: '98fff8c4-615f-4f6d-bf12-1881f4b6ebdb' } }">Forgot password?</router-link>
+                            </div>
+                            <div class="col-10 mt-3"><button class="btn btn-primary create-btn font-weight-bold w-100">Log in</button></div>                       
+                        </form>
+                    </transition>
+                    <transition name="move" mode="out-in">
+                        <div v-if="showSignUp">
+                            <SignUpCheckin @show-log-in="displayLogIn"/>
                         </div>
-                        <div class="col-10 mt-2 text-primary">
-                            <router-link :to="{ name: 'ForgotPassword', params: { tenantId: '98fff8c4-615f-4f6d-bf12-1881f4b6ebdb' } }">Forgot password?</router-link>
-                        </div>
-                        <div class="col-10 mt-3"><button class="btn btn-primary create-btn font-weight-bold w-100">Log in</button></div>                       
-                    </form>
-                    <div v-if="showSignUp">
-                        <SignUpCheckin @show-log-in="displayLogIn"/>
-                    </div>
+                    </transition>
                     
                     <div class="row  offset-1" v-if="showLogIn">
                         
@@ -226,6 +230,24 @@ export default ({
 .error-message {
   color: #b52626;
   margin-bottom: 0;
+}
+
+.move-enter-active {
+  animation: move-in .8s;
+}
+/* .move-leave-active {
+  animation: move-in .8s reverse;
+} */
+@keyframes move-in {
+  0% {
+    transform: translateX(-200px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
 }
 
 </style>

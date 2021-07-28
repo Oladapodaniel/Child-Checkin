@@ -31,7 +31,7 @@
                             v-model="selectedRole"
                              />
                         </div>
-                        <div class="col-sm-5 form-group mt-3">
+                        <div class="col-sm-5 form-group mt-3 mt-md-0">
                             <label class="font-weight-bold"> Password </label>
                             <input type="password" class=" form-control all-input" v-model="userDetails.password" placeholder="Enter password">
                             <span class="py-2">Must be six character long</span>
