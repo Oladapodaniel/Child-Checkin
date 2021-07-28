@@ -39,7 +39,7 @@
                             <div class="mt-1">Must be six character long</div>
                         </div>
                         <div class="col-10 mt-2 text-primary">
-                            <router-link :to="{ name: 'ForgotPassword', params: { tenantId: route.params.tenantId } }">Forgot password?</router-link>
+                            <router-link :to="{ name: 'ForgotPassword', params: { tenantId: route.query.id } }">Forgot password?</router-link>
                         </div>
                         <div class="col-10 mt-3"><button class="btn btn-primary create-btn font-weight-bold w-100">Log in</button></div>                       
                     </form>
@@ -136,7 +136,7 @@ export default ({
 
         const getChurchProfile = async() => {
             try {
-                let res = await axios.get(`/GetChurchProfileById?tenantId=${route.params.tenantId}`)
+                let res = await axios.get(`/GetChurchProfileById?tenantId=${route.query.id}`)
                 console.log(res)
                 churchLogo.value = res.data.returnObject.logo
                 churchName.value = res.data.returnObject.name
