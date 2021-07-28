@@ -3,7 +3,7 @@ import Home from '../views/Home.vue'
 
 const routes = [
       {
-        path: '/',
+        path: '/:tenantId',
         name: 'CheckinSignin',
         component: () =>
         import( /* webpackChunkName: "workflow" */ '../views/ChildCheckinPortal/CheckinSignin.vue'),
