@@ -14,6 +14,7 @@ npm run serve
 ### Compiles and minifies for production
 ```
 npm run build
+?utm_source=landing&launcher=true
 ```
 
 ### Customize configuration
