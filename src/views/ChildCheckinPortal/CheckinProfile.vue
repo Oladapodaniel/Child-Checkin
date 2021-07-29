@@ -191,12 +191,19 @@ import axios from "@/gateway/backendapi";
                 familyId.value = res.data.id
                 if (res.data.father) {
                   role.value = "father"
-                  profile.value = res.data.father
+                  // profile.value = res.data.father
+                  profile.value.firstName = res.data.father.firstName
+                  profile.value.lastName = res.data.father.lastName
+                  profile.value.homePhone = res.data.homePhone ? res.data.homePhone : res.data.father.mobilePhone
                 } else {
                   role.value = "mother"
-                  profile.value = res.data.mother
+                  // profile.value = res.data.mother
+                  profile.value.firstName = res.data.mother.firstName
+                  profile.value.lastName = res.data.mother.lastName
+                  profile.value.homePhone = res.data.mother.mobilePhone
+                  profile.value.homeAddress = res.data.homePhone ? res.data.homePhone : res.data.mother.homeAddress
                 }
-                profile.value.homePhone = res.data.homePhone
+                profile.value.email = res.data.email
 
             }
             catch (error) {
