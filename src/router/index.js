@@ -2,14 +2,25 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 
 const routes = [
+      // {
+      //   path: '/index.html',
+      //   name: 'CheckinSignin',
+      //   component: () =>
+      //   import( /* webpackChunkName: "workflow" */ '../views/ChildCheckinPortal/CheckinSignin.vue'),
+      //   meta: {
+      //     title: 'Churchplus - ChildSignin',
+      //   }
+      // },
+      {   path: '/index.html',
+          component: () =>
+          import( /* webpackChunkName: "workflow" */ '../views/ChildCheckinPortal/CheckinSignin.vue'),
+          alias: '/'
+      },
       {
-        path: '/index.html',
-        name: 'CheckinSignin',
-        component: () =>
-        import( /* webpackChunkName: "workflow" */ '../views/ChildCheckinPortal/CheckinSignin.vue'),
-        meta: {
-          title: 'Churchplus - ChildSignin',
-        }
+          path: '/',
+          name: 'CheckinSignin',
+          component: () =>
+          import( /* webpackChunkName: "workflow" */ '../views/ChildCheckinPortal/CheckinSignin.vue')
       },
       {
         path: '/checkinsignup/:tenantId',
