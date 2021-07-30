@@ -79,7 +79,7 @@ export default ({
 
 
         // Places im hardcoding tenant id
-        // sign up 1 place
+        // sign up 2 place
         // log in 2 places
         const getFamilyRoles = async () => {
             try {
@@ -154,7 +154,7 @@ export default ({
         }
             const getChurchProfile = async() => {
                 try {
-                    let res = await axios.get(`/GetChurchProfileById?tenantId=${route.params.tenantId}`)
+                    let res = await axios.get(`/GetChurchProfileById?tenantId=98fff8c4-615f-4f6d-bf12-1881f4b6ebdb`)
                     console.log(res)
                     churchLogo.value = res.data.returnObject.logo
                     churchName.value = res.data.returnObject.name

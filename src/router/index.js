@@ -101,11 +101,12 @@ router.beforeEach((to, from, next) => {
 
 
   const checkinToken = localStorage.getItem('checkinToken')
-//   alert(4)
-  if ((to.name === "CheckinSignUp" || to.name === "CheckinSignin") && checkinToken) {
-    return next({ name: 'CheckinDashboard' })
-  } 
+  if (to.path !== "/" && !checkinToken) return next("/")
+  if (to.path === "/" && checkinToken) return next({ name: 'CheckinDashboard' })
   next(true)
+    
+
+  console.log('im going to either pages but no token')
 
 // Find the nearest route element with meta tags.
 const nearestWithMeta = to.matched.slice().reverse().find(r => r.meta && r.meta.metaTags);

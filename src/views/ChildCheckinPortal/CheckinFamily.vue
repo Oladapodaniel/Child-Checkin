@@ -72,7 +72,7 @@
                         FILTER
                     </p>
                     </div> -->
-                    <div class="col-2">
+                    <div class="col-4">
                     <p @click="toggleSearch" class="search-text w-100 mt-2">
                         <i class="fa fa-search"></i> SEARCH
                     </p>
@@ -253,12 +253,18 @@
       </div>
     </div>
     <div class="row" v-else-if="familyDetails ? familyDetails.familyMembers ? familyDetails.familyMembers.length === 0 : '' : '' && !loading" >
-            <div class="col-8 offset-2 col-sm-5 col-md-3 offset-sm-3 offset-md-4 empty-img mt-5 text-center">
-                <img src="../../assets/people/people-empty.svg" class="w-100" alt="" />
-                <div class="mt-3">You have not added any family members yet</div>
-                <div class="default-btn border-0 text-white mt-4 button-add-member c-pointer" data-toggle="modal" data-target="#familyModal">Add member</div>
-            </div>
+        <div class="col-8 offset-2 col-sm-5 col-md-3 offset-sm-3 offset-md-4 empty-img mt-5 text-center">
+            <img src="../../assets/people/people-empty.svg" class="w-100" alt="" />
+            <div class="mt-3">You have not added any family members yet</div>
+            <div class="default-btn border-0 text-white mt-4 button-add-member c-pointer" data-toggle="modal" data-target="#familyModal">Add member</div>
         </div>
+    </div>
+    <div v-if="familyDetails ? familyDetails.familyMembers ? familyDetails.familyMembers.length > 0 : '' : ''" class="row d-flex justify-content-end mt-5">
+        <div class="button-add-member default-btn border-0 text-white c-pointer text-center" @click="routeToEvent">
+        Register for service
+      </div>
+    </div>
+    
         <div class="text-center mt-5" v-if="loading">
             <ProgressSpinner />
         </div>
@@ -273,17 +279,18 @@
 import { ref, computed } from "vue";
 import Memberform from "./FormMember";
 import axios from "@/gateway/backendapi";
-// import { useConfirm } from "primevue/useconfirm";
-// import { useToast } from "primevue/usetoast";
+import { useConfirm } from "primevue/useconfirm";
+import { useToast } from "primevue/usetoast";
 import ProgressSpinner from 'primevue/progressspinner';
+import router from '../../router';
 export default {
    components: { Memberform, ProgressSpinner },
   setup() {
     const showFilterForm = ref(false);
     const searchIsVisible = ref(false);
     const memberRoles = ref([])
-    // const confirm = useConfirm();
-    // const toast = useToast()
+    const confirm = useConfirm();
+    const toast = useToast()
     const close = ref("")
     const searchText = ref("")
     const loading = ref(false)
@@ -423,6 +430,10 @@ export default {
           const addNewMember = () => {
             memberDetails.value = {}
           }
+
+          const routeToEvent = () => {
+            router.push({ name: 'UpcomingEvents' })
+          }
         
 
 
@@ -447,7 +458,8 @@ export default {
       edittedValue,
       memberToEditIndex,
       resetImage,
-      addNewMember
+      addNewMember,
+      routeToEvent
     };
   },
 };
