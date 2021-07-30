@@ -217,7 +217,7 @@
                 </div>
             </div>
             <div v-if="upcomingEvent" class="col-10 col-sm-6 offset-sm-3 col-md-4 offset-md-4 offset-1 mt-2 default-btn primary-bg text-white border-0 text-center cursor-pointer" @click="viewUpcomingEventDetails">
-                Register your family
+                Register for service
             </div>
         </div>
     </div>
