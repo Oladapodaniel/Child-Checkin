@@ -67,7 +67,8 @@ export default ({
     setup(props, { emit }) {
         const route = useRoute()
         const userDetails = ref({
-            tenantId: route.params.tenantId
+            // tenantId: route.params.tenantId
+            tenantId: "98fff8c4-615f-4f6d-bf12-1881f4b6ebdb"
         })
         const username = ref("")
         const roles = ref([])
@@ -76,6 +77,10 @@ export default ({
         const errorMessage = ref("")
         const churchName = ref("")
 
+
+        // Places im hardcoding tenant id
+        // sign up 1 place
+        // log in 2 places
         const getFamilyRoles = async () => {
             try {
                 let { data } = await axios.get('/getfamilyroles')
