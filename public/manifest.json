@@ -2,16 +2,19 @@
     "name": "Child Checkin",
     "short_name": "Child Checkin",
     "theme_color": "#ffffff",
+    "description": "Check in your family members to your church event.",
     "icons": [
         {
-            "src": "./img/icons/logo192.jpg",
+            "src": "./img/icons/logo192.png",
             "sizes": "192x192",
-            "type": "image/jpg"
+            "type": "image/png",
+            "purpose": "any"
         },
         {
-            "src": "./img/icons/logo512.jpg",
+            "src": "./img/icons/logo512.png",
             "sizes": "512x512",
-            "type": "image/jpg"
+            "type": "image/png",
+            "purpose": "any"
         }
     ],
     "start_url": "/index.html",   
