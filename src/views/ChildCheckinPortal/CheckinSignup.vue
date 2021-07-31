@@ -68,7 +68,7 @@ export default ({
         const route = useRoute()
         const userDetails = ref({
             // tenantId: route.params.tenantId
-            tenantId: "98fff8c4-615f-4f6d-bf12-1881f4b6ebdb"
+            tenantId: "4c451ff7-8ced-49d7-8eca-80078b187963"
         })
         const username = ref("")
         const roles = ref([])
@@ -154,7 +154,7 @@ export default ({
         }
             const getChurchProfile = async() => {
                 try {
-                    let res = await axios.get(`/GetChurchProfileById?tenantId=98fff8c4-615f-4f6d-bf12-1881f4b6ebdb`)
+                    let res = await axios.get(`/GetChurchProfileById?tenantId=4c451ff7-8ced-49d7-8eca-80078b187963`)
                     console.log(res)
                     churchLogo.value = res.data.returnObject.logo
                     churchName.value = res.data.returnObject.name
