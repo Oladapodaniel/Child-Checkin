@@ -7,7 +7,7 @@
                         <div class=" col-10 mt-5 "><img :src="churchLogo" style=" width: 250px" alt=""></div>
                         <div class="col-10 my-3">
                             <h4 class="font-weight-bold" v-if="showLogIn">Log in to Child Checkin</h4>
-                            <h4 class="font-weight-bold" v-if="showSignUp">Create an account</h4>
+                            <h4 class="font-weight-bold" v-if="showSignUp">Create a family account</h4>
                         </div>
                     </div>
                     <div class="row" v-if="!showLogIn && !showSignUp">
