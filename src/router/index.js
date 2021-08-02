@@ -101,8 +101,8 @@ router.beforeEach((to, from, next) => {
 
 
   const checkinToken = localStorage.getItem('checkinToken')
-  if ((to.path !== "/" || to.path !== "/index.html") && !checkinToken) return next("/")
-  if ((to.path === "/" || to.path === "/index.html") && checkinToken) return next({ name: 'CheckinDashboard' })
+  if (to.path !== "/index.html" && !checkinToken) return next("/index.html")
+  if (to.path === "/index.html" && checkinToken) return next({ name: 'CheckinDashboard' })
   next(true)
     
 
