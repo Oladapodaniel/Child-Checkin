@@ -256,12 +256,7 @@ export default {
                 const res = await axios.get(`/api/CheckInAttendance/checkinevents?activityId=${route.params.eventId}`)
                 console.log(res)
                 attendanceCheckin.value = res.data
-                familyDetails.value.familyMembers.map(i => {
-                    i.attendanceCheckin = res.data
-                    return i
-                })
-                console.log(familyDetails.value.familyMembers)
-                
+    
                 let registeredPeopleWithGroup = []
                 res.data.forEach(i => {
                     const eachPerson = i.personsinAttendance.map(j => {
@@ -277,7 +272,8 @@ export default {
                     })
                 })
                 console.log(registeredPeople.value)
-                findPersonInGroup(res.data)        
+                findPersonInGroup(res.data)
+                        
             }
             catch (error) {
                 console.log(error)
@@ -286,6 +282,10 @@ export default {
         
 
         const findPersonInGroup = (groups) => {
+             let filteredAttendance = attendanceCheckin.value.filter(i => {
+                    return i.registrationSlot !== 0
+                })
+
             familyDetails.value.familyMembers.map(i => {
                 const locatePerson = registeredPeople.value.find(j => {
                     if(j.id === i.person.id) return j.id === i.person.id
@@ -294,9 +294,16 @@ export default {
                 i.selectedAttendanceCheckin = groups.find(i => {
                     if (locatePerson) return i.groupID === locatePerson.groupId
                 })
+                // If any is selected and group is 0, on component creation, remove the filled group from the list, else display all
+                if (!i.selectedAttendanceCheckin) {
+                    i.attendanceCheckin = filteredAttendance
+                    } else {
+                        i.attendanceCheckin = attendanceCheckin.value
+                    }
                 console.log(locatePerson)
                 return i
             })
+            console.log(familyDetails.value.familyMembers)
         }
 
         
@@ -572,6 +579,29 @@ export default {
                     if (indexInZeroes < 0 || (detail.selectedAttendanceCheckin && detail.selectedAttendanceCheckin.fullGroupName === i.fullGroupName)) return i;
                 })
             }
+            
+            // groupSlots.value.forEach(i => {
+            //     if (!i.slot) {
+            //         toast.add({
+            //             severity: "warn",
+            //             summary: "Class full",
+            //             detail: `Class ${i.group} is full, please join the online class`,
+            //         });
+            //     } 
+            // })
+
+            let checkSlot = groupSlots.value.find(i => {
+                return i.group === item.selectedAttendanceCheckin.fullGroupName
+            })
+            console.log(checkSlot)
+            if (!checkSlot.slot) {
+                toast.add({
+                    severity: "info",
+                    summary: "Class full",
+                    detail: `Class ${checkSlot.group} is full, if you intend to add another child to this class, please let the child join the online class.`,
+                    life: 20000
+                });
+            } 
 
 
         }
