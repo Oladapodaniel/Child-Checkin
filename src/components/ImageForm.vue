@@ -89,9 +89,12 @@ import { onUpdated, ref } from 'vue'
             onUpdated(() => {
                 if (props.editPicture) {
                     pictureUrl.value = props.editPicture
-                    console.log('hereeeee')
+                    console.log('getting picture')
+                }   else {
+                    console.log('Not getting')
+                    pictureUrl.value = ""
                 }
-                console.log(props.memberDetails, 'hereeee')
+                // console.log(props.memberDetails, 'hereeee')
                 if ((!props.memberDetails || Object.keys(props.memberDetails).length === 0) && (url.value || pictureUrl.value)) {
                     pictureUrl.value = ""
                     // url.value = ""
