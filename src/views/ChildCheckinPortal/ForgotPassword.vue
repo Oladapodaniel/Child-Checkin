@@ -8,13 +8,13 @@
             <div class="col-12 col-sm-6 offset-sm-3 mt-4 form-group">
                 <label class="font-weight-bold ">Email / Phone Number</label>
                 <input type="text" class=" form-control all-input " v-model="phoneNumber" placeholder="Enter email / phone number">
-                <div class="default-btn btn border-0 text-white mt-3" :class="{ 'primary-bg' : !changeColorBtn, 'bg-secondary' : changeColorBtn }" @click="retrieveFamily"><i class="pi pi-spin pi-spinner text-white" v-if="retrieveLoading"></i> Retrieve Password</div>
+                <div class="default-btn btn border-0 text-white mt-3 c-pointer" :class="{ 'primary-bg' : !changeColorBtn, 'bg-secondary' : changeColorBtn }" @click="retrieveFamily"><i class="pi pi-spin pi-spinner text-white" v-if="retrieveLoading"></i> Retrieve Password</div>
             </div>
             <div class="col-12 col-sm-6 offset-sm-3 mt-2 form-group" v-if="showPassword">
                 <label class="font-weight-bold ">Password</label>
                 <input type="text" class=" form-control all-input " v-model="password" placeholder="Enter password">
-                <div class="default-btn btn border-0 text-white primary-bg mt-3" @click="resetPassword"><i class="pi pi-spin pi-spinner text-white" v-if="resetLoading"></i> Reset Password</div>
-                <div class="font-weight-700 mt-3" @click="goBack">👈 Back to login</div>
+                <div class="default-btn btn border-0 text-white primary-bg mt-3 c-pointer" @click="resetPassword"><i class="pi pi-spin pi-spinner text-white" v-if="resetLoading"></i> Reset Password</div>
+                <div class="font-weight-700 mt-3 c-pointer" @click="goBack">👈 Back to login</div>
             </div>
         </div>
     </div>

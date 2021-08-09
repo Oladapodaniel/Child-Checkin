@@ -32,7 +32,7 @@ const routes = [
         }
       },
       {
-          path: '/forgotpassword/:tenantId',
+          path: '/forgotpassword',
           name: 'ForgotPassword',
           component: () =>
               import( /* webpackChunkName: "sentemails" */ '@/views/ChildCheckinPortal/ForgotPassword'),
@@ -101,7 +101,9 @@ router.beforeEach((to, from, next) => {
 
 
   const checkinToken = localStorage.getItem('checkinToken')
-  if (to.path !== "/index.html" && !checkinToken) return next("/index.html")
+  if ((to.path !== "/index.html") && (to.path !== "/forgotpassword") && !checkinToken) return next("/index.html")
+ 
+
   if (to.path === "/index.html" && checkinToken) return next({ name: 'CheckinDashboard' })
   next(true)
     
