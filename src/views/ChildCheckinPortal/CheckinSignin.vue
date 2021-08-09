@@ -39,8 +39,8 @@
                                 <input type="password" class=" form-control all-input" v-model="userDetails.password" placeholder="Enter password">
                                 <div class="mt-1">Must be six character long</div>
                             </div>
-                            <div class="col-10 mt-2 text-primary">
-                                <router-link :to="{ name: 'ForgotPassword', params: { tenantId: '4c451ff7-8ced-49d7-8eca-80078b187963' } }">Forgot password?</router-link>
+                            <div class="col-10 mt-2 text-primary c-pointer" @click="forgot">
+                               Forgot password?
                             </div>
                             <div class="col-10 mt-3"><button class="btn btn-primary create-btn font-weight-bold w-100">Log in</button></div>                       
                         </form>
@@ -167,6 +167,10 @@ export default ({
             showSignUp.value = false
         }
 
+        const forgot = () => {
+            router.push('/forgotpassword')
+        }
+
         return {
             userDetails,
             logIn,
@@ -179,7 +183,8 @@ export default ({
             toggleSignUp,
             showLogIn,
             showSignUp,
-            displayLogIn
+            displayLogIn,
+            forgot
         }
     },
 })
