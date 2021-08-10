@@ -104,7 +104,8 @@ router.beforeEach((to, from, next) => {
   if ((to.path !== "/index.html") && (to.path !== "/forgotpassword") && !checkinToken) return next("/index.html")
  
 
-  if ((to.path === "/") || (to.path === "/index.html") && checkinToken) return next({ name: 'CheckinDashboard' })
+  if ((to.path === "/index.html") && checkinToken) return next({ name: 'CheckinDashboard' })
+//   if ((to.path === "/") || (to.path === "/index.html") && checkinToken) return next({ name: 'CheckinDashboard' })
   next(true)
     
 
