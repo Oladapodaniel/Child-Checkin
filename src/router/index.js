@@ -108,8 +108,6 @@ router.beforeEach((to, from, next) => {
   next(true)
     
 
-  console.log('im going to either pages but no token')
-
 // Find the nearest route element with meta tags.
 const nearestWithMeta = to.matched.slice().reverse().find(r => r.meta && r.meta.metaTags);
 
