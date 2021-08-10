@@ -105,6 +105,7 @@ router.beforeEach((to, from, next) => {
  
 
 //   if ((to.path === "/index.html") && checkinToken) return next({ name: 'CheckinDashboard' })
+// fgewroklnf
   if ((to.path === "/") || (to.path === "/index.html") && checkinToken) return next({ name: 'CheckinDashboard' })
   next(true)
     
