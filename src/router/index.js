@@ -98,7 +98,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-
+    // Route guard to prevent unauthorised users
 
   const checkinToken = localStorage.getItem('checkinToken')
   if ((to.path !== "/index.html") && (to.path !== "/forgotpassword") && !checkinToken) return next("/index.html")
