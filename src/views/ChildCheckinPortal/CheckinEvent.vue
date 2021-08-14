@@ -49,7 +49,7 @@
             </div>
         </div>
 
-        <div class="row" v-if="true">
+        <div class="row" v-if="false">
             <div class="offset-1 offset-md-3 card col-10 col-sm-6 p-3" >
                 <div class="row">
                     <div class="col-6 checkin-text">
