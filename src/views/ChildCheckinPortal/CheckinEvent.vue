@@ -49,7 +49,7 @@
             </div>
         </div>
 
-        <div class="row" v-if="false">
+        <div class="row" v-if="true">
             <div class="offset-1 offset-md-3 card col-10 col-sm-6 p-3" >
                 <div class="row">
                     <div class="col-6 checkin-text">
@@ -594,7 +594,7 @@ export default {
                 return i.group === item.selectedAttendanceCheckin.fullGroupName
             })
             console.log(checkSlot)
-            if (!checkSlot.slot) {
+            if (checkSlot.slot === 0) {
                 toast.add({
                     severity: "info",
                     summary: "Class full",
