@@ -190,13 +190,13 @@
                 <!-- </div> -->
             <!-- </div>  -->
             <div class="col-10 col-sm-6  p-0 offset-1 offset-sm-3 offset-md-4 col-md-4" >
-                <div class="upcoming-event table" v-if="upcomingEvent">
+                <div class="upcoming-event table" v-if="removeExpiredEvent">
                     <div class="remove-decoration" @click="viewUpcomingEventDetails">
                     <div class="container">
                         <div class="row mt-2 p-3 d-flex justify-content-between align-items-center">
                             <!-- <div class="upcoming-text">Upcoming Event</div> -->
                             <div class="col-12 p-0">
-                                <img :src="upcomingEvent.eventBanner" v-if="upcomingEvent.eventBanner" class="mt-4 w-100">
+                                <img :src="removeExpiredEvent.eventBanner" v-if="removeExpiredEvent.eventBanner" class="mt-4 w-100">
                                 <div v-else-if="loading" class="text-center col-12">
                                     <div class=" mt-5">
                                         <ProgressSpinner />
@@ -205,9 +205,9 @@
                                 <img src="../../assets/checkin-assets/worship-service.jpeg" v-else class="mt-4 w-100">
                             </div>
                             <div class="col-12 mt-4 font-weight-700 text-dark text-center">
-                                {{ upcomingEvent.name }}
+                                {{ removeExpiredEvent.name }}
                             </div>
-                            <div class="col-12 upcoming-date text-center"><i class="pi pi-calendar"></i>  {{ formatDate(upcomingEvent.date) }}</div>
+                            <div class="col-12 upcoming-date text-center"><i class="pi pi-calendar"></i>  {{ formatDate(removeExpiredEvent.date) }}</div>
                         </div>
                     </div>
                     </div>
@@ -216,7 +216,7 @@
                     <img src="../../assets/checkin-assets/No-Upcoming-Events.png" class="col-12"/>
                 </div>
             </div>
-            <div v-if="upcomingEvent" class="col-10 col-sm-6 offset-sm-3 col-md-4 offset-md-4 offset-1 mt-2 default-btn primary-bg text-white border-0 text-center cursor-pointer" @click="viewUpcomingEventDetails">
+            <div v-if="removeExpiredEvent" class="col-10 col-sm-6 offset-sm-3 col-md-4 offset-md-4 offset-1 mt-2 default-btn primary-bg text-white border-0 text-center cursor-pointer" @click="viewUpcomingEventDetails">
                 Register for service
             </div>
         </div>
@@ -254,7 +254,7 @@ export default {
         const searchText = ref("")
         const memberRoles = ref([])
         const loading = ref(false)
-        const upcomingEvent = ref({})
+        const upcomingEvent = ref([])
         const analyticData = ref([])
         const analyticValue = ref({})
 
@@ -342,13 +342,20 @@ export default {
             return familyDetails.value ? familyDetails.value.familyMembers ? familyDetails.value.familyMembers.filter(i => i.person.firstName.toLowerCase().includes(searchText.value.toLowerCase())) : "" : ""
         })
 
+        const removeExpiredEvent = computed (() => {
+            if (upcomingEvent.value.length === 0) return []
+            if(upcomingEvent.value.length > 0 && new Date(upcomingEvent.value[0].date).toDateString() === new Date().toDateString() && new Date().toLocaleTimeString() >= '10:00:00 AM') upcomingEvent.value.splice(0, 1)
+            return upcomingEvent.value[0]
+
+        })
+
 
         const getUpcomingEvents = () => {
             loading.value = true
             axios.get('/api/CheckInAttendance/upcomingCheckinEvents')
                 .then(res => {
                     console.log(res)
-                    upcomingEvent.value = res.data[0]
+                    upcomingEvent.value = res.data
                     loading.value = false
                 })
                 .catch(err => {
@@ -376,13 +383,13 @@ export default {
         }
 
         const viewUpcomingEventDetails = () => {
-            localStorage.setItem("event_register", JSON.stringify(upcomingEvent.value))
-            router.push({ name: 'CheckinEvent', params: { eventId: upcomingEvent.value.activityID } })
+            localStorage.setItem("event_register", JSON.stringify(removeExpiredEvent.value))
+            router.push({ name: 'CheckinEvent', params: { eventId: removeExpiredEvent.value.activityID } })
         }
 
 
         return {
-            filterFormIsVissible, toggleFilterFormVissibility, searchIsVisible, toggleSearch, chartData, series, attendanceSeries, familyDetails, searchText, memberRoles, searchMember, loading, showConfirmModal, deleteMember, upcomingEvent, formatDate, analyticData, analyticValue, viewUpcomingEventDetails
+            filterFormIsVissible, toggleFilterFormVissibility, searchIsVisible, toggleSearch, chartData, series, attendanceSeries, familyDetails, searchText, memberRoles, searchMember, loading, showConfirmModal, deleteMember, upcomingEvent, formatDate, analyticData, analyticValue, viewUpcomingEventDetails, removeExpiredEvent
         }
     }
 }

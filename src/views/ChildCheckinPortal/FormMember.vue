@@ -79,7 +79,7 @@
 </template>
 
 <script>
-import { watch, ref } from "vue"
+import { watchEffect, ref } from "vue"
 import axios from "@/gateway/backendapi";
 import Dropdown from "primevue/dropdown";
 import ImageForm from "../../components/ImageForm";
@@ -233,7 +233,7 @@ export default {
         emit("remove-modal")
     }
 
-    const watchForMember = watch(() => {
+    const watchForMember = watchEffect(() => {
         console.log(props.memberDetails)
         if(props.memberDetails && person.value) {
             person.value.firstName = props.memberDetails.person ? props.memberDetails.person.firstName : ""
