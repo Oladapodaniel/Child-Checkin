@@ -15,9 +15,9 @@ const routes = [
           component: () =>
           import( /* webpackChunkName: "workflow" */ '../views/ChildCheckinPortal/CheckinSignin.vue'),
           alias: '/',
-          beforeEnter(to, from, next) {
-            window.location.href = "https://child-checkin-seven.vercel.app/";
-          }
+        //   beforeEnter(to, from, next) {
+        //     window.location.href = "https://child-checkin-seven.vercel.app/";
+        //   }
       },
       {
           path: '/',

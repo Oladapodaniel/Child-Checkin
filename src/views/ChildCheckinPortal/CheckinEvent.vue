@@ -69,6 +69,7 @@
                 </div>
             </div>
         </div>
+        <ProgressSpinner />
 
         <div class="row mt-1" v-if="familyDetails && familyDetails.familyMembers && familyDetails.familyMembers.length > 0">
             <div class="col-1 ml-3">
@@ -191,11 +192,13 @@ import dateFormatter from '../../services/dates/dateformatter';
 import { useToast } from "primevue/usetoast";
 import finish from '../../services/progressbar/progress';
 import router from '../../router';
+import ProgressSpinner from 'primevue/progressspinner';
 export default {
     components: {
         Dropdown,
         Memberform,
-        Dialog
+        Dialog,
+        ProgressSpinner
     },
     setup () {
         const route = useRoute()
@@ -222,6 +225,7 @@ export default {
         const registeredPeople = ref([])
         const loading = ref(false)
         const noSlotGroup = ref({})
+        const uniqueCode = ref("")
         
 
 
@@ -324,6 +328,7 @@ export default {
             try {
                 const res = await axios.get(`/api/Family/family?personId=${baseAuth.checkinPerson}`)
                 console.log(res)
+                uniqueCode.value = res.data.uniqueCode
                 familyDetails.value = res.data
                 familyDetails.value.familyMembers = res.data.familyMembers.map(i => {
                     i.addToGroup = false
@@ -429,7 +434,7 @@ export default {
                 console.log(res)
                 loading.value = false
                 if (res.data.response.toLowerCase().includes("success")) {
-                    router.push({ name: 'ThankYou', params: { code: res.data.returnObject } })
+                    router.push({ name: 'ThankYou', params: { code: uniqueCode.value } })
                     // checkinCode.value = res.data.returnObject
                     // displayModal.value = true
                     finish()
@@ -653,7 +658,8 @@ export default {
             groupSlots,
             registeredPeople,
             loading,
-            noSlotGroup
+            noSlotGroup,
+            uniqueCode
         }
     }
 }

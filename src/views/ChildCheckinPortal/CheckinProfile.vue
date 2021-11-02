@@ -98,6 +98,18 @@
                         class="form-control ml-0" />
                         </div>
                     </div>
+                      <div class="row">
+                        <div class="col-12 col-md-3 text-md-right">
+                        <label class="small-text lb font-weight-600" for="">Family Code</label>
+                        </div>
+                        <div class="col-12 col-md-8 form-group">
+                        <input type="text" 
+                        placeholder="Code"
+                        v-model="newCode"
+                        @blur="updateCode"
+                        class="form-control ml-0" />
+                        </div>
+                    </div>
                     <div class="row">
                       <div class="col-md-2 offset-1 offset-md-5 mt-5" @click="save">
                           <button class="primary-btn text-white px-5">Save</button>
@@ -151,7 +163,7 @@
             </div>
 
         </div>
-
+    <Toast />
     </div>
 </template>
 
@@ -159,8 +171,10 @@
 import { ref } from "vue"
 // import router from '../../router';
 import axios from "@/gateway/backendapi";
+import { useToast } from "primevue/usetoast";
     export default {
         setup(){
+          const toast = useToast()
           const profile = ref({})
           const selectedRole = ref(null)
           const roles = ref([])
@@ -169,6 +183,8 @@ import axios from "@/gateway/backendapi";
           const disabled = ref(true)
           const familyId = ref("")
           const role = ref("")
+          const newCode = ref("")
+          const oldCode = ref("")
 
           const getFamilyRoles = async () => {
             try {
@@ -189,6 +205,8 @@ import axios from "@/gateway/backendapi";
                 const res = await axios.get(`/api/Family/family?personId=${baseAuth.checkinPerson}`)
                 console.log(res)
                 familyId.value = res.data.id
+                oldCode.value = res.data.uniqueCode
+                newCode.value = res.data.uniqueCode
                 if (res.data.father) {
                   role.value = "father"
                   // profile.value = res.data.father
@@ -245,6 +263,13 @@ import axios from "@/gateway/backendapi";
             axios.put("/api/Family/editProfile", updateProfile)
             .then(res => {
               console.log(res)
+              toast.add({
+                    severity: "success",
+                    summary: "Successful",
+                    detail: "Profile updated successfully",
+                    life: 6000
+                });
+              
             })
             .catch(err => console.log(err))
             // router.push({ name: 'CheckinDashboard' })
@@ -262,6 +287,43 @@ import axios from "@/gateway/backendapi";
             .catch(err => console.log(err))
           }
 
+          const updateCode = async() => {
+           if (newCode.value !== oldCode.value) {
+              let getBaseAuth = localStorage.getItem('baseAuth')
+            let baseAuth = JSON.parse(getBaseAuth)
+            let body = {
+              oldCode: oldCode.value,
+              newCode: newCode.value,
+              tenantId: baseAuth.tenantId,
+              familyId: familyId.value
+            }
+            console.log(body)
+            try {
+              let { data } = await axios.put("/api/Family/changeUniqueCode", body)
+              console.log(data)
+              if (data.status) {
+                oldCode.value = newCode.value
+                toast.add({
+                    severity: "success",
+                    summary: "Successful",
+                    detail: data.response,
+                    life: 6000
+                });
+              } else {
+                toast.add({
+                    severity: "warn",
+                    summary: "Oops sorry",
+                    detail: data.response,
+                    life: 6000
+                });
+              }
+            }
+            catch (err) {
+              console.log(err)
+            }
+           }
+          }
+
           return{
             selectedRole,
             roles,
@@ -272,8 +334,9 @@ import axios from "@/gateway/backendapi";
             uploadImage,
             disabled,
             familyId,
-            role
-
+            role,
+            updateCode,
+            newCode
           }
 
         }

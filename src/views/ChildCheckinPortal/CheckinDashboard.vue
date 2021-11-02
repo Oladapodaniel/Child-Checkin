@@ -10,7 +10,7 @@
        
        <div class="row mt-3 text-center text-sm-left" v-if="familyDetails ? familyDetails.familyMembers ? familyDetails.familyMembers.length > 0 : '' : ''">
            <div class="col-12 welcome-name">Hey {{ familyDetails && familyDetails.father ? familyDetails.father.firstName : familyDetails && familyDetails.mother ? familyDetails.mother.firstName : "" }}! 🖐</div> 
-           <div class="col-12">Now that you have registered your family member, click the register button below to register them for the event</div>
+           <div class="col-12">Now that you have your family member setup, click the register button below to register them for the event</div>
        </div>
         <!-- <div class="row d-flex justify-content-center justify-content-sm-between mt-5" v-if="analyticValue && analyticValue.allRegisteredEvents">
             <div class="analytics-text">Analytics Overview</div>
