@@ -184,7 +184,7 @@
                     </div>
                     <div v-if="loading" class="text-center col-12">
                         <div class=" mt-5" v-if="loading">
-                            <ProgressSpinner />
+                            <ProgressSpinner style="width: 50px" />
                         </div>
                     </div>
                 <!-- </div> -->
@@ -199,7 +199,7 @@
                                 <img :src="removeExpiredEvent.eventBanner" v-if="removeExpiredEvent.eventBanner" class="mt-4 w-100">
                                 <div v-else-if="loading" class="text-center col-12">
                                     <div class=" mt-5">
-                                        <ProgressSpinner />
+                                        <ProgressSpinner style="width: 50px"/>
                                     </div>
                                 </div>
                                 <img src="../../assets/checkin-assets/worship-service.jpeg" v-else class="mt-4 w-100">

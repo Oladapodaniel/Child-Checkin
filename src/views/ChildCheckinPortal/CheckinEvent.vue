@@ -48,6 +48,9 @@
                         </div>
             </div>
         </div>
+        <div class="row d-flex justify-content-center" v-if="loadingFamily">
+            <ProgressSpinner style="width: 50px" />
+        </div>
 
         <div class="row" v-if="true">
             <div class="offset-1 offset-md-3 card col-10 col-sm-6 p-3" >
@@ -69,7 +72,7 @@
                 </div>
             </div>
         </div>
-        <ProgressSpinner />
+        
 
         <div class="row mt-1" v-if="familyDetails && familyDetails.familyMembers && familyDetails.familyMembers.length > 0">
             <div class="col-1 ml-3">
@@ -226,6 +229,7 @@ export default {
         const loading = ref(false)
         const noSlotGroup = ref({})
         const uniqueCode = ref("")
+        const loadingFamily = ref(false)
         
 
 
@@ -255,7 +259,7 @@ export default {
 
 
         const getAttendanceCheckin = async() => {
-            
+           
             try {
                 const res = await axios.get(`/api/CheckInAttendance/checkinevents?activityId=${route.params.eventId}`)
                 console.log(res)
@@ -307,6 +311,7 @@ export default {
                 console.log(locatePerson)
                 return i
             })
+            loadingFamily.value = false
             console.log(familyDetails.value.familyMembers)
         }
 
@@ -323,6 +328,7 @@ export default {
         })
 
         const getFamilyMembers = async() => {
+             loadingFamily.value = true
             let getBaseAuth = localStorage.getItem('baseAuth')
             let baseAuth = JSON.parse(getBaseAuth)
             try {
@@ -659,7 +665,8 @@ export default {
             registeredPeople,
             loading,
             noSlotGroup,
-            uniqueCode
+            uniqueCode,
+            loadingFamily
         }
     }
 }

@@ -8,7 +8,7 @@
             <div class="col-12">{{ formatDate(new Date().toISOString()) }}</div>
             <div v-if="loading" class="text-center col-12">
                 <div class=" mt-5">
-                    <ProgressSpinner />
+                    <ProgressSpinner style="width: 50px" />
                 </div>
             </div>
         </div>

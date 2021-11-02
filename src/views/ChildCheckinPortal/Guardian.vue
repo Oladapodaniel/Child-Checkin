@@ -217,7 +217,7 @@
                             <div class="default-btn border-0 text-white mt-4 primary-bg c-pointer" data-toggle="modal" data-target="#guardianModal">Add guardian</div>
                         </div>
                         <div class="col-12 text-center mt-5" v-if="loading">
-                            <ProgressSpinner />
+                            <ProgressSpinner style="width: 50px" />
                         </div>
                 <Toast />
             <ConfirmDialog />

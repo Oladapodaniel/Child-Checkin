@@ -266,7 +266,7 @@
     </div>
     
         <div class="text-center mt-5" v-if="loading">
-            <ProgressSpinner />
+            <ProgressSpinner style="width: 50px" />
         </div>
 
     <!--End of Table Area -->
