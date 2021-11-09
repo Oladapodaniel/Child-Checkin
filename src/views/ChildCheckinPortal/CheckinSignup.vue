@@ -66,9 +66,10 @@ export default ({
     components: { Dropdown },
     setup(props, { emit }) {
         const route = useRoute()
+        const routeParameter = window.location.pathname
         const userDetails = ref({
             // tenantId: route.params.tenantId
-            tenantId: "4c451ff7-8ced-49d7-8eca-80078b187963"
+            tenantId: routeParameter.toString().substring(1)
         })
         const username = ref("")
         const roles = ref([])
@@ -154,7 +155,7 @@ export default ({
         }
             const getChurchProfile = async() => {
                 try {
-                    let res = await axios.get(`/GetChurchProfileById?tenantId=4c451ff7-8ced-49d7-8eca-80078b187963`)
+                    let res = await axios.get(`/GetChurchProfileById?tenantId=${routeParameter.toString().substring(1)}`)
                     console.log(res)
                     churchLogo.value = res.data.returnObject.logo
                     churchName.value = res.data.returnObject.name

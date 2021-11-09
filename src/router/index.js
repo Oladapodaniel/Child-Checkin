@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/Home.vue'
+// import Home from '../views/Home.vue'
+console.log(window.location.pathname)
+const routeParameter = window.location.pathname
 
 const routes = [
       // {
@@ -11,7 +13,7 @@ const routes = [
       //     title: 'Churchplus - ChildSignin',
       //   }
       // },
-      {   path: '/index.html',
+      {   path: routeParameter,
           component: () =>
           import( /* webpackChunkName: "workflow" */ '../views/ChildCheckinPortal/CheckinSignin.vue'),
           alias: '/',
@@ -104,10 +106,10 @@ router.beforeEach((to, from, next) => {
     // Route guard to prevent unauthorised users
 
   const checkinToken = localStorage.getItem('checkinToken')
-  if ((to.path !== "/index.html") && (to.path !== "/forgotpassword") && !checkinToken) return next("/index.html")
+  if ((to.path !== routeParameter) && (to.path !== "/forgotpassword") && !checkinToken) return next(routeParameter)
  
 
-  if ((to.path === "/") || (to.path === "/index.html") && checkinToken) return next({ name: 'CheckinDashboard' })
+  if ((to.path === routeParameter) && checkinToken) return next({ name: 'CheckinDashboard' })
   next(true)
     
 
