@@ -25,7 +25,11 @@ const routes = [
           path: '/',
           name: 'CheckinSignin',
           component: () =>
-          import( /* webpackChunkName: "workflow" */ '../views/ChildCheckinPortal/CheckinSignin.vue')
+          import( /* webpackChunkName: "workflow" */ '../views/ChildCheckinPortal/CheckinSignin.vue'),
+          alias: '/',
+            beforeEnter(to, from, next) {
+            window.location.href = "https://child-checkin-two.vercel.app/";
+          }
       },
       {
         path: '/checkinsignup/:tenantId',
