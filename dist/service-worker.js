@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/precache-manifest.df6c1ed7060c72bb9319771d874b390b.js"
+  "/precache-manifest.21e2b24e1510811fcb3e0c04372d7c79.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "childcheckin"});
