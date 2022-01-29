@@ -47,7 +47,17 @@
                                     <label for="" class="font-weight-700">Date of birth</label>
                                 </div>
                                 <div class="col-md-9">
-                                    <input type="date" v-model="dateOfBirth" class="form-control">
+                                    <div class="row">
+                                        <div class="col-6 col-md-4">
+                                            <Dropdown :options="['Day', ...birthDaysArr ]" v-model="person.dayOfBirth" placeholder="Day" style="width: 100%" />
+                                        </div>
+                                        <div class="col-6 col-md-4 p-md-0">
+                                            <Dropdown :options="['Month', ...months]" v-model="person.monthOfBirth" placeholder="Month" style="width: 100%" />
+                                        </div>
+                                        <div class="col-12 col-md-4 mt-1 mt-md-0">
+                                            <Dropdown :options="['Year', ...birthYearsArr]" v-model="person.yearOfBirth" placeholder="Year" style="width: 100%" />
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -79,7 +89,7 @@
 </template>
 
 <script>
-import { watchEffect, ref } from "vue"
+import { watchEffect, ref, computed } from "vue"
 import axios from "@/gateway/backendapi";
 import Dropdown from "primevue/dropdown";
 import ImageForm from "../../components/ImageForm";
@@ -101,6 +111,19 @@ export default {
         const image = ref({})
         const loading = ref(false)
         const resetImage = ref(false)
+        const birthDaysArr = ref([ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 ]);
+        const months = ref([ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ]);
+
+
+        const birthYearsArr = computed(() => {
+            const arrOfYears = [];
+            let currentYear = new Date().getFullYear();
+            while (arrOfYears.length <= 100) {
+                arrOfYears.push(currentYear);
+                currentYear = currentYear - 1;
+            }
+            return arrOfYears;
+        });
 
 
         const getFamilyRoles = async () => {
@@ -158,7 +181,9 @@ export default {
                     firstName: person.value.firstName,
                     lastName: person.value.lastName,
                     pictureUrl: pictureUrl.value,
-                    // dateOfBirth: dateOfBirth.value,
+                    dayOfBirth: person.value.dayOfBirth,
+                    monthOfBirth: months.value.indexOf(person.value.monthOfBirth) + 1,
+                    yearOfBirth: person.value.yearOfBirth,
                     genderId: selectedGender.value.id
                 },
                 tenantId: props.familyDetails.tenantID
@@ -244,7 +269,10 @@ export default {
             selectedGender.value = gender.value ? gender.value.lookUps ? gender.value.lookUps.find(i => {
                 if (props.memberDetails.person) return i.id === props.memberDetails.person.genderID
             }) : {} : {}
-            pictureUrl.value = props.memberDetails.person ? props.memberDetails.person.pictureUrl : ""
+            pictureUrl.value = props.memberDetails.person && props.memberDetails.person.pictureUrl ? props.memberDetails.person.pictureUrl : ""
+            person.value.dayOfBirth = props.memberDetails.person ? props.memberDetails.person.dayOfBirth : "Day"
+            person.value.monthOfBirth = props.memberDetails.person ? months.value[props.memberDetails.person.monthOfBirth - 1] : "Month"
+            person.value.yearOfBirth = props.memberDetails.person ? props.memberDetails.person.yearOfBirth : "Year"
         }
 
         // if(props.resetImage) {
@@ -273,7 +301,10 @@ export default {
         setImage,
         image,
         loading,
-        resetImage
+        resetImage,
+        birthDaysArr,
+        months,
+        birthYearsArr
     }
     }
 }
