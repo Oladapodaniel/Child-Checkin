@@ -86,6 +86,7 @@
            </div>
        </div>
     </div>
+    <Toast />
 </template>
 
 <script>
@@ -94,12 +95,14 @@ import axios from "@/gateway/backendapi";
 import Dropdown from "primevue/dropdown";
 import ImageForm from "../../components/ImageForm";
 import { useRoute } from "vue-router"
+import { useToast } from "primevue/usetoast";
 
 export default {
     props: ['familyDetails', 'memberDetails'],
     components: { Dropdown, ImageForm },
     setup (props, { emit }) {
         const route = useRoute()
+        const toast = useToast()
         const roles = ref([])
         const person = ref({})
         const gender = ref({})
@@ -153,8 +156,8 @@ export default {
     getGender()
 
     const uploadImageToAddMember = () => {
+        loading.value = true
         if (image.value instanceof File) {
-                    loading.value = true
                     console.log(image.value)
                     let formData = new FormData()
                     formData.append("mediaFileImage", image.value)
@@ -162,7 +165,7 @@ export default {
                     .then(res => {
                         console.log(res)
                         pictureUrl.value = res.data.pictureUrl
-                        loading.value = false
+                        // loading.value = false
                         addMember()
                     })
                     .catch(err => {
@@ -207,12 +210,22 @@ export default {
                     roleId: role.value.id,
                     personId: data.person.id,
                     genderID: selectedGender.value.id,
-                    id: data.id
+                    id: data.id,
+                    dayOfBirth: person.value.dayOfBirth,
+                    monthOfBirth: person.value.monthOfBirth,
+                    yearOfBirth: person.value.yearOfBirth
                 }
                 console.log(member)
                 emit("remove-modal")
                 emit("push-to-view", member)
                 resetImage.value = true
+
+                toast.add({
+                    severity: "success",
+                    summary: "Success",
+                    detail: "Family member created successfully",
+                    life: 4000,
+                });
 
                 // Re-initialize the variables when upload is successful
                 person.value = {}
@@ -240,11 +253,21 @@ export default {
                     pictureUrl: pictureUrl.value,
                     roleId: role.value.id,
                     personId: person.value.personId,
-                    genderID: selectedGender.value.id
+                    genderID: selectedGender.value.id,
+                    dayOfBirth: person.value.dayOfBirth,
+                    monthOfBirth: person.value.monthOfBirth,
+                    yearOfBirth: person.value.yearOfBirth
                 }
                 console.log(member)
                 emit("remove-modal")
                 emit("editted-value", member)
+
+                toast.add({
+                    severity: "success",
+                    summary: "Success",
+                    detail: "Family member updated successfully",
+                    life: 4000,
+                });
             }
             catch (err) {
                 console.log(err)
@@ -304,7 +327,8 @@ export default {
         resetImage,
         birthDaysArr,
         months,
-        birthYearsArr
+        birthYearsArr,
+        toast
     }
     }
 }

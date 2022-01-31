@@ -390,13 +390,15 @@ export default {
                     lastName: payload.lastName,
                     pictureUrl: payload.pictureUrl,
                     genderID: payload.genderID,
-                    id: payload.personId
+                    id: payload.personId,
+                    dayOfBirth: payload.dayOfBirth,
+                    monthOfBirth: payload.monthOfBirth,
+                    yearOfBirth: payload.yearOfBirth
                 },
                 familyRoleID: payload.roleId,
                 id: payload.id
             }
             familyDetails.value.familyMembers.push(data)
-            console.log(data)
         }
 
         const searchMember = computed(() => {
@@ -410,19 +412,20 @@ export default {
 
         }
 
-        const edittedValue = (payload) => {
-         
-       
+        const edittedValue = (payload) => {     
           let edittedData = {
             person: {
               firstName: payload.firstName,
-                    lastName: payload.lastName,
-                    pictureUrl: payload.pictureUrl,
-                    id: payload.personId,
-                    genderID: payload.genderID
-                },
-                familyRoleID: payload.roleId
-            }
+                lastName: payload.lastName,
+                pictureUrl: payload.pictureUrl,
+                id: payload.personId,
+                genderID: payload.genderID,
+                dayOfBirth: payload.dayOfBirth,
+                monthOfBirth: payload.monthOfBirth,
+                yearOfBirth: payload.yearOfBirth
+            },
+              familyRoleID: payload.roleId
+          }
               console.log(edittedData)
             familyDetails.value.familyMembers.splice(memberToEditIndex.value, 1, edittedData)
           }
