@@ -189,8 +189,8 @@
                     </div>
                 <!-- </div> -->
             <!-- </div>  -->
-            <div class="col-10 col-sm-6  p-0 offset-1 offset-sm-3 offset-md-4 col-md-4" >
-                <div class="upcoming-event table" v-if="removeExpiredEvent">
+            <div class="col-10 col-sm-6  p-0 offset-1 offset-sm-3 offset-md-4 col-md-4">
+                <div class="upcoming-event table" v-if="Object.keys(removeExpiredEvent).length > 0">
                     <div class="remove-decoration" @click="viewUpcomingEventDetails">
                     <div class="container">
                         <div class="row mt-2 p-3 d-flex justify-content-between align-items-center">
@@ -216,7 +216,7 @@
                     <img src="../../assets/checkin-assets/No-Upcoming-Events.png" class="col-12"/>
                 </div>
             </div>
-            <div v-if="removeExpiredEvent" class="col-10 col-sm-6 offset-sm-3 col-md-4 offset-md-4 offset-1 mt-2 default-btn primary-bg text-white border-0 text-center cursor-pointer" @click="viewUpcomingEventDetails">
+            <div v-if="Object.keys(removeExpiredEvent).length > 0" class="col-10 col-sm-6 offset-sm-3 col-md-4 offset-md-4 offset-1 mt-2 default-btn primary-bg text-white border-0 text-center cursor-pointer" @click="viewUpcomingEventDetails">
                 Register for service
             </div>
         </div>

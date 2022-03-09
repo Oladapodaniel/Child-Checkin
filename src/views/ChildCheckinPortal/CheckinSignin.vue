@@ -55,7 +55,7 @@
                         
                         <div class="col-10 my-4 font-weight-bold">
                             <span>Don't have an account?</span> 
-                             &nbsp; <span class="text-primary" @click="toggleSignUp">Sign up now</span>
+                             &nbsp; <span class="text-primary c-pointer" @click="toggleSignUp">Sign up now</span>
                         </div>
                         <div class="col-10 mt-3 font-weight-bold">All Right Reserved 2021</div>
                     </div>

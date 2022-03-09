@@ -43,7 +43,7 @@
                  
                         <div class="col-10 my-4 font-weight-bold">
                             <span>Already have an account?</span> 
-                            &nbsp; <span class="primary-text" @click="showLogIn">Sign in now</span>
+                            &nbsp; <span class="primary-text c-pointer" @click="showLogIn">Sign in now</span>
                         </div>
                         <div class="col-10 mt-3 font-weight-bold">All Right Reserved 2021</div>
                     </div>
