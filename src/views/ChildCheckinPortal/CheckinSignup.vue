@@ -86,12 +86,12 @@ export default ({
             try {
                 let { data } = await axios.get('/getfamilyroles')
                 console.log(data)
-                const father = data.result.find(i => {
+                const father = data.find(i => {
                     return i.name === "Father"
                 })
                 roles.value.push(father)
                 
-                const mother = data.result.find(i => {
+                const mother = data.find(i => {
                     return i.name === "Mother"
                 })
                 roles.value.push(mother)
