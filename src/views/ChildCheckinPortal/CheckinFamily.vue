@@ -1,105 +1,38 @@
-
-
 <template>
-  <div
-    class="container-fluid container-wide container-top">
+  <div class="container-fluid container-wide container-top">
     <!-- Header Area -->
-    <div
-      class="row d-flex justify-content-between">
+    <div class="row d-flex justify-content-between">
       <div class="family-header">Family</div>
-      <div
-        class="
-          button-add-member
-          default-btn
-          border-0
-          text-white
-          c-pointer
-          modal-dialog-centered
-        "
-        data-toggle="modal"
-        data-target="#familyModal"
-        @click="addNewMember"
-      >
-        Add Member
-      </div>
+      <el-button data-toggle="modal" data-target="#familyModal" @click="addNewMember" plain round type="primary"
+        color="#136acd" size="large">Add Member</el-button>
     </div>
-    <div
-      class="modal fade"
-      id="familyModal"
-      tabindex="-1"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
+    <div class="modal fade" id="familyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title header1" id="exampleModalLabel">{{ Object.keys(memberDetails).length > 0 ? 'Update' : 'Add New' }} Member</h5>
-            <div
-              type="button"
-              class="btn-close"
-              data-dismiss="modal"
-              aria-label="close"
-              ref="close"
-            ><i class="pi pi-times"></i></div>
+            <h5 class="modal-title header1" id="exampleModalLabel">{{ Object.keys(memberDetails).length > 0 ? 'Update' :
+              'Add New' }} Member</h5>
+            <div type="button" class="btn-close" data-dismiss="modal" aria-label="close" ref="close"><i
+                class="pi pi-times"></i></div>
           </div>
           <div class="modal-body">
-            <Memberform :familyDetails="familyDetails" @member-roles="getMemberRoles" @remove-modal="dismissModal" @push-to-view="pushToView" :memberDetails="memberDetails" @editted-value="edittedValue" :resetImage="resetImage"/>
+            <Memberform :familyDetails="familyDetails" @member-roles="getMemberRoles" @remove-modal="dismissModal"
+              @push-to-view="pushToView" :memberDetails="memberDetails" @editted-value="edittedValue"
+              :resetImage="resetImage" />
           </div>
 
         </div>
       </div>
     </div>
-     <!--End of Modal -->
+    <!--End of Modal -->
 
     <!-- Table Area -->
-    <div class="row mt-5" v-if="familyDetails ? familyDetails.familyMembers ? familyDetails.familyMembers.length > 0 : '' : ''">
+    <div class="row mt-5" v-if="familyDetails && familyDetails?.familyMembers?.length > 0">
       <div class="col-12 col-sm-12">
         <div class="row">
-            <div class="col-12 px-0 mb-0 table">
-                <div class="top-con">
-                    <div class="table-top">
-                        <!-- <div
-                        class="filter col-2"
-                        >
-                    <p class="mt-2">
-                        <i class="fa fa-print"></i>
-                        SORT
-                    </p>
-                    </div>
-                    <div class="filter col-2">
-                    <p @click="toggleFilterFormVissibility" class="mt-2">
-                        <i class="fas fa-filter"></i>
-                        FILTER
-                    </p>
-                    </div> -->
-                    <div class="col-4">
-                    <p @click="toggleSearch" class="search-text w-100 mt-2">
-                        <i class="fa fa-search"></i> SEARCH
-                    </p>
-                    </div>
 
-                    <div class="search d-flex ml-2">
-                    <label
-                        class="label-search d-flex"
-                        :class="{
-                        'show-search': searchIsVisible,
-                        'hide-search': !searchIsVisible,
-                        }"
-                    >
-                        <input
-                        type="text"
-                        placeholder="Search..."
-                        v-model="searchText"
-                        />
-                        <span class="empty-btn">x</span>
-                        <span class="search-btn">
-                        <i class="fa fa-search"></i>
-                        </span>
-                    </label>
-                    </div>
-                </div>
-                </div>
-                <!-- <div
+
+          <!-- <div
                 class="filter-options"
                 :class="{ 'filter-options-shown': filterFormIsVissible }"
                 id="ignore1"
@@ -148,17 +81,75 @@
                 </div>
                 </div> -->
 
-
+          <div class="container-fluid">
+            <div class="row">
+              <el-auto-resizer class="border">
+                <el-table :data="searchMember" stripe style="width: 100%">
+                  <!-- @current-change="handleChange" -->
+                  <el-table-column prop="pictureUrl" label="Picture">
+                    <template #default="scope">
+                      <div style="display: flex; align-items: center">
+                        <el-image :src="scope.row.pictureUrl" style="width: 30px; height: 30px; border-radius: 50%;"
+                          :preview-src-list="srcList" :initial-index="scope.$index" hide-on-click-modal>
+                          <template #error>
+                            <div class="image-slot error-image">
+                              <el-icon><icon-picture /></el-icon>
+                            </div>
+                          </template>
+                        </el-image>
+                      </div>
+                    </template>
+                  </el-table-column>
+                  <el-table-column prop="firstName" label="First Name">
+                    <template #default="scope">
+                      <div @click="editMember(scope.row, scope.$index)" data-toggle="modal" data-target="#familyModal"
+                        class="c-pointer">{{ scope.row.firstName }}</div>
+                    </template>
+                  </el-table-column>
+                  <el-table-column prop="lastName" label="Last Name">
+                    <template #default="scope">
+                      <div @click="editMember(scope.row, scope.$index)" data-toggle="modal" data-target="#familyModal"
+                        class="c-pointer">{{ scope.row.lastName }}</div>
+                    </template>
+                  </el-table-column>
+                  <el-table-column prop="familyRoleID" label="Role">
+                    <template #default="scope">
+                      <div style="display: flex; align-items: center" class="c-pointer"
+                        @click="editMember(scope.row, scope.$index)" data-toggle="modal" data-target="#familyModal">
+                        {{ getRoleName(scope.row.familyRoleID) }}
+                      </div>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="Actions">
+                    <template #default="scope">
+                      <div class="d-flex flex-column flex-sm-row">
+                        <div class="mr-3 mb-2 md-sm-0">
+                          <el-button size="small" data-toggle="modal" data-target="#familyModal"
+                            @click="editMember(scope.row, scope.$index)">
+                            Edit
+                          </el-button>
+                        </div>
+                        <el-button size="small" type="danger" @click="showConfirmModal(scope.row.id, scope.$index)">
+                          Delete
+                        </el-button>
+                      </div>
+                    </template>
+                  </el-table-column>
+                </el-table>
+              </el-auto-resizer>
+            </div>
+          </div>
+          <!-- 
                 <div class="container-fluid d-none d-md-block">
                     <div class="row t-header">
-                    <!-- <div class="col-12 parent-desc first p-2 pl-4"> -->
+                    
                         <div class="col-md-1 px-3"></div>
                         <div class="small-text text-capitalize col-md-2 font-weight-bold">PICTURE</div>
                         <div class="small-text text-capitalize col-md-3 font-weight-bold">FIRSTNAME</div>
                         <div class="small-text text-capitalize col-md-3 font-weight-bold">LASTNAME</div>
                         <div class="small-text text-capitalize col-md-2 font-weight-bold">ROLE</div>
                         <div class="small-text text-capitalize col-md-1 font-weight-bold"></div>
-                    <!-- </div> -->
+                    
                     </div>
                 </div>
                 <div v-if="searchMember.length > 0">
@@ -169,10 +160,7 @@
 
                         <div class="row w-100" style="margin:0">
                             <div class="col-md-1 d-flex d-md-block px-3 justify-content-end align-self-center">
-                            <!-- <input
-                                type="checkbox"
-                                class="form-check"
-                            /> -->
+                     
                             </div>
 
                             <div class="col-md-2" style="height: 52px">
@@ -180,7 +168,7 @@
                                 <span class="text-dark font-weight-bold d-flex d-md-none">PICTURE</span>
                                 <span class="text-decoration-none">
                                     <img :src="item.person.pictureUrl" class="member-image" v-if="item.person.pictureUrl" />
-                                    <!-- <div class="child-pic" v-else></div> -->
+                      
                                 </span>
                             </p>
                             </div>
@@ -233,45 +221,42 @@
                                   >
                                   </div>
                                 </div>
-                                <!-- <i class="pi pi-trash" @click="showConfirmModal(item.id, index)"></i> -->
+              
                             </div>
                             </div>
                         </div>
                         </div>
                     </div>
-                </div>
-                <div v-if="searchMember.length === 0">
-                    <div class="row">
-                        <div class="col-12 p-2 text-center text-danger">
-                            No members matches you searched text, trying searching with another text
-                        </div>
-                    </div>
-                </div>
-
+                </div> -->
+          <div v-if="searchMember.length === 0">
+            <div class="row">
+              <div class="col-12 p-2 text-center text-danger">
+                No members matches you searched text, trying searching with another text
+              </div>
             </div>
-        </div>
-      </div>
-    </div>
-    <div class="row" v-else-if="familyDetails ? familyDetails.familyMembers ? familyDetails.familyMembers.length === 0 : '' : '' && !loading" >
-        <div class="col-8 offset-2 col-sm-5 col-md-3 offset-sm-3 offset-md-4 empty-img mt-5 text-center">
-            <img src="../../assets/people/people-empty.svg" class="w-100" alt="" />
-            <div class="mt-3">You have not added any family members yet</div>
-            <div class="default-btn border-0 text-white mt-4 button-add-member c-pointer" data-toggle="modal" data-target="#familyModal">Add member</div>
-        </div>
-    </div>
-    <div v-if="familyDetails ? familyDetails.familyMembers ? familyDetails.familyMembers.length > 0 : '' : ''" class="row d-flex justify-content-end mt-5">
-        <div class="button-add-member default-btn border-0 text-white c-pointer text-center" @click="routeToEvent">
-        Register for service
-      </div>
-    </div>
-    
-        <div class="text-center mt-5" v-if="loading">
-            <ProgressSpinner style="width: 50px" />
-        </div>
+          </div>
 
-    <!--End of Table Area -->
-    <ConfirmDialog />
-    <Toast />
+
+        </div>
+      </div>
+    </div>
+    <div class="row"
+      v-else-if="(familyDetails && familyDetails?.familyMembers?.length === 0 || Object.keys(familyDetails).length === 0) && !loading">
+      <div class="col-8 offset-2 col-sm-5 col-md-3 offset-sm-3 offset-md-4 empty-img mt-5 text-center">
+        <img src="../../assets/people/people-empty.svg" class="w-100" alt="" />
+        <div class="mt-3">You have not added any family members yet</div>
+        <div class="default-btn border-0 text-white mt-4 button-add-member c-pointer" data-toggle="modal"
+          data-target="#familyModal">Add member</div>
+      </div>
+    </div>
+    <div v-if="familyDetails && familyDetails?.familyMembers?.length > 0" class="row d-flex justify-content-end mt-5">
+      <el-button class="button-text" round color="#136acd" size="large" @click="routeToEvent">Register for
+        service</el-button>
+    </div>
+
+    <div class="text-center mt-5" v-if="loading">
+      <ProgressSpinner style="width: 50px" />
+    </div>
   </div>
 </template>
 
@@ -279,18 +264,17 @@
 import { ref, computed } from "vue";
 import Memberform from "./FormMember";
 import axios from "@/gateway/backendapi";
-import { useConfirm } from "primevue/useconfirm";
-import { useToast } from "primevue/usetoast";
 import ProgressSpinner from 'primevue/progressspinner';
 import router from '../../router';
+import { Picture as IconPicture } from '@element-plus/icons-vue';
+import { ElMessage, ElMessageBox, ElNotification } from 'element-plus';
+
 export default {
-   components: { Memberform, ProgressSpinner },
+  components: { Memberform, ProgressSpinner, IconPicture },
   setup() {
     const showFilterForm = ref(false);
     const searchIsVisible = ref(false);
     const memberRoles = ref([])
-    const confirm = useConfirm();
-    const toast = useToast()
     const close = ref("")
     const searchText = ref("")
     const loading = ref(false)
@@ -307,137 +291,163 @@ export default {
       searchIsVisible.value = !searchIsVisible.value;
     };
 
-    const getFamilyMembers = async() => {
-            loading.value = true
-            let getBaseAuth = localStorage.getItem('baseAuth')
-            let baseAuth = JSON.parse(getBaseAuth)
-            try {
-                const res = await axios.get(`/api/Family/family?personId=${baseAuth.checkinPerson}`)
-                console.log(res)
-                familyDetails.value = res.data
-                loading.value = false
-            }
-            catch (error) {
-                console.log(error)
-                loading.value = false
-            }
+    const getFamilyMembers = async () => {
+      loading.value = true
+      let getBaseAuth = localStorage.getItem('baseAuth')
+      let baseAuth = JSON.parse(getBaseAuth)
+      try {
+        const res = await axios.get(`/api/Family/getfamilybymemberid?personId=${baseAuth.checkinPerson}`)
+        console.log(res)
+        if (res.data) {
+          familyDetails.value = res.data
         }
-        getFamilyMembers()
+        loading.value = false
+      }
+      catch (error) {
+        console.log(error)
+        loading.value = false
+      }
+    }
+    getFamilyMembers()
 
     const getMemberRoles = (payload) => {
-        memberRoles.value = payload
+      memberRoles.value = payload
     }
 
-    const deleteMember = async(id, index) => {
+    const deleteMember = async (id, index) => {
       console.log(id)
-        if (id) {
-          try {
-              const res = await axios.delete(`/api/Family/removeAFamilyMember?id=${id}`)
-              console.log(res)
-              toast.add({
-                  severity: "success",
-                  summary: "Deleted",
-                  detail: "Deleted Successfully",
-                  life: 3000,
-              });
-              familyDetails.value.familyMembers.splice(index, 1)
-          }
-          catch (error) {
-              console.log(error)
-          }
-        } else {
+      if (id) {
+        try {
+          const res = await axios.delete(`/api/Family/removeAFamilyMember?id=${id}`)
+          console.log(res)
+          ElNotification({
+            title: 'Deleted',
+            message: 'Deleted succesfully',
+            type: 'success',
+          })
           familyDetails.value.familyMembers.splice(index, 1)
-          toast.add({
-                  severity: "success",
-                  summary: "Deleted",
-                  detail: "Deleted Successfully",
-                  life: 3000,
-              });
         }
+        catch (error) {
+          console.log(error)
+        }
+      } else {
+        familyDetails.value.familyMembers.splice(index, 1)
+        ElNotification({
+          title: 'Deleted',
+          message: 'Deleted succesfully',
+          type: 'success',
+        })
+      }
 
     }
 
 
     const showConfirmModal = (id, index) => {
-        confirm.require({
-            message: "Are you sure you want to proceed?",
-            header: "Confirmation",
-            icon: "pi pi-exclamation-triangle",
-            acceptClass: "confirm-delete",
-            rejectClass: "cancel-delete",
-            accept: () => {
-            deleteMember(id, index);
-            },
-            reject: () => {
-            toast.add({
-                severity: "info",
-                summary: "Discarded",
-                detail: "Delete discarded",
-                life: 3000,
-            });
-            },
-        });
-        };
-
-        const dismissModal = () => {
-            close.value.click()
+      ElMessageBox.confirm(
+        'Are you sure you want to proceed?',
+        'Confirm delete',
+        {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'error',
         }
-
-        const pushToView = (payload) => {
-            let data = {
-                person: {
-                    firstName: payload.firstName,
-                    lastName: payload.lastName,
-                    pictureUrl: payload.pictureUrl,
-                    genderID: payload.genderID,
-                    id: payload.personId,
-                    dayOfBirth: payload.dayOfBirth,
-                    monthOfBirth: payload.monthOfBirth,
-                    yearOfBirth: payload.yearOfBirth
-                },
-                familyRoleID: payload.roleId,
-                id: payload.id
-            }
-            familyDetails.value.familyMembers.push(data)
-        }
-
-        const searchMember = computed(() => {
-            if (!searchText.value && familyDetails.value.familyMembers.length === 0) return familyDetails.value.familyMembers
-            return familyDetails.value.familyMembers.filter(i => i.person.firstName.toLowerCase().includes(searchText.value.toLowerCase()))
+      )
+        .then(() => {
+          deleteMember(id, index);
         })
+        .catch(() => {
+          ElMessage({
+            type: 'info',
+            message: 'Delete canceled',
+          })
+        })
+    };
 
-        const editMember = (member, index) => {
-          memberDetails.value = member
-          memberToEditIndex.value = index
+    const dismissModal = () => {
+      close.value.click()
+    }
 
-        }
+    const pushToView = (payload) => {
+      let data = {
+        person: {
+          firstName: payload.firstName,
+          lastName: payload.lastName,
+          pictureUrl: payload.pictureUrl,
+          genderID: payload.genderID,
+          id: payload.personId,
+          dayOfBirth: payload.dayOfBirth,
+          monthOfBirth: payload.monthOfBirth,
+          yearOfBirth: payload.yearOfBirth
+        },
+        familyRoleID: payload.roleId,
+        id: payload.id
+      }
+      familyDetails.value.familyMembers.push(data)
+    }
 
-        const edittedValue = (payload) => {     
-          let edittedData = {
-            person: {
-              firstName: payload.firstName,
-                lastName: payload.lastName,
-                pictureUrl: payload.pictureUrl,
-                id: payload.personId,
-                genderID: payload.genderID,
-                dayOfBirth: payload.dayOfBirth,
-                monthOfBirth: payload.monthOfBirth,
-                yearOfBirth: payload.yearOfBirth
-            },
-              familyRoleID: payload.roleId
-          }
-              console.log(edittedData)
-            familyDetails.value.familyMembers.splice(memberToEditIndex.value, 1, edittedData)
-          }
+    const searchMember = computed(() => {
+      if (!searchText.value && familyDetails.value.familyMembers.length === 0) return familyDetails.value.familyMembers.map(i => ({
+        firstName: i.person?.firstName,
+        pictureUrl: i.person?.pictureUrl,
+        lastName: i.person?.lastName,
+        familyRoleID: i.familyRoleID,
+        id: i.id
+      }))
+      return familyDetails.value.familyMembers.filter(i => i.person.firstName.toLowerCase().includes(searchText.value.toLowerCase())).map(i => ({
+        firstName: i.person?.firstName,
+        pictureUrl: i.person?.pictureUrl,
+        lastName: i.person?.lastName,
+        familyRoleID: i.familyRoleID,
+        id: i.id
+      }))
+    })
 
-          const addNewMember = () => {
-            memberDetails.value = {}
-          }
+    const srcList = computed(() => {
+      if (searchMember.value.length === 0) return []
+      return searchMember.value.map(i => i.pictureUrl);
+    })
 
-          const routeToEvent = () => {
-            router.push({ name: 'UpcomingEvents' })
-          }
-        
+    const editMember = (member, index) => {
+      const memberFullDetails = familyDetails.value?.familyMembers?.find(i => i.id === member.id)
+      memberDetails.value = memberFullDetails
+      memberToEditIndex.value = index
+
+    }
+
+    const edittedValue = (payload) => {
+      let edittedData = {
+        person: {
+          firstName: payload.firstName,
+          lastName: payload.lastName,
+          pictureUrl: payload.pictureUrl,
+          id: payload.personId,
+          genderID: payload.genderID,
+          dayOfBirth: payload.dayOfBirth,
+          monthOfBirth: payload.monthOfBirth,
+          yearOfBirth: payload.yearOfBirth
+        },
+        familyRoleID: payload.roleId
+      }
+      console.log(edittedData)
+      familyDetails.value.familyMembers.splice(memberToEditIndex.value, 1, edittedData)
+    }
+
+    const addNewMember = () => {
+      memberDetails.value = {}
+    }
+
+    const routeToEvent = () => {
+      router.push({ name: 'UpcomingEvents' })
+    }
+
+    const getRoleName = (roleId) => {
+      if (!roleId) return 'Not selected'
+      return memberRoles.value.find(i => i.id === roleId)?.name
+    }
+
+    const handleChange = (val) => {
+      console.log(val)
+    }
 
 
     return {
@@ -462,17 +472,23 @@ export default {
       memberToEditIndex,
       resetImage,
       addNewMember,
-      routeToEvent
+      routeToEvent,
+      srcList,
+      getRoleName,
+      handleChange
+      // data,
+      // memberList
     };
   },
 };
 </script>
 
 <style scoped>
-.modal-large{
-  width:100%;
+.modal-large {
+  width: 100%;
   max-width: 680px;
 }
+
 .t-header {
   background: #dde2e6 0% 0% no-repeat padding-box;
   font-size: 16px;
@@ -496,6 +512,7 @@ export default {
   display: flex;
   justify-content: flex-end;
 }
+
 .table-top label:hover,
 .table-top p:hover {
   cursor: pointer;
@@ -506,61 +523,64 @@ export default {
   overflow: hidden;
   transition: all 0.5s ease-in-out;
 }
+
 .filter-options-shown {
   height: 80px !important;
   overflow: hidden;
   transition: all 0.5s ease-in-out;
 }
 
-.header-textarea{
+.header-textarea {
   font: normal normal normal 11px/13px Nunito Sans;
   color: #8898AA;
 }
 
-.img-resize{
-  width:2.2rem ;
-  height:2.2rem ;
+.img-resize {
+  width: 2.2rem;
+  height: 2.2rem;
 }
 
-.img-resize2{
- width:100%;
-  height:100%;
+.img-resize2 {
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
 }
 
 /* modal style */
-.header1{
-font: normal normal 800 34px/46px Nunito Sans;
-letter-spacing: 0px;
-color: #02172E;
-opacity: 1;
+.header1 {
+  font: normal normal 800 34px/46px Nunito Sans;
+  letter-spacing: 0px;
+  color: #02172E;
+  opacity: 1;
 }
-.image1{
-border-radius: 22px;
-width: 267px;
-height: 336px;
+
+.image1 {
+  border-radius: 22px;
+  width: 267px;
+  height: 336px;
 }
-.person-img{
-width: 170px;
-height: 174px;
-background: #FFFFFF 0% 0% no-repeat padding-box;
-border: 1px solid #707070;
-border-radius: 20px;
-opacity: 1;
+
+.person-img {
+  width: 170px;
+  height: 174px;
+  background: #FFFFFF 0% 0% no-repeat padding-box;
+  border: 1px solid #707070;
+  border-radius: 20px;
+  opacity: 1;
 }
 
 .child-pic {
-    border: 1px solid black;
-    width: 55px;
-    height: 55px;
-    border-radius: 50%
+  border: 1px solid black;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%
 }
 
 .member-image {
-    height: 60px;
-    width: 60px;
-    border-radius: 50%;
-    object-fit: cover;
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .empty-img {
@@ -572,4 +592,10 @@ opacity: 1;
   transition: all 0.1s ease-in-out;
 }
 
+.error-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
 </style>

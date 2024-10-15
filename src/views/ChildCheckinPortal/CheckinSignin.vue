@@ -100,12 +100,9 @@ export default ({
             }   else {
                 userDetails.value.phoneNumber = username.value
             }
-           
-            console.log(userDetails.value)
 
             try {
                 let res = await axios.post('/familyLogin', userDetails.value)
-                console.log(res)
                 if (res.status === 200 && res.data.login.result.statusCode === 401) {
                     errorMessage.value = res.data.login.result.value.message
                 }   else if (res.status === 200 && res.data.login.result.statusCode === 200) {
@@ -118,8 +115,6 @@ export default ({
                     localStorage.setItem('baseAuth', JSON.stringify(baseAuth))
                     router.push({ name: 'CheckinDashboard' })
                     errorMessage.value = ""
-                }   else {
-                    console.log(res)
                 }
                
             }
@@ -143,8 +138,6 @@ export default ({
             
             try {
                 let res = await axios.get(`/GetChurchProfileById?tenantId=${routeParameter.toString().substring(1)}`)
-                // 4c451ff7-8ced-49d7-8eca-80078b187963
-                console.log(res)
                 churchLogo.value = res.data.returnObject.logo
                 churchName.value = res.data.returnObject.name
             }

@@ -67,20 +67,26 @@
 
 <script>
 import { useRoute }  from "vue-router"
-import { ref } from "vue"
+import { computed, ref } from "vue"
 import axios from "@/gateway/backendapi";
 export default {
     setup (props, { emit }) {
         const route = useRoute()
         const churchLogo = ref("")
-        const tenantID = ref("")    
+
+        const tenantID = computed(() => {
+            const auth = localStorage.getItem('baseAuth')
+            if (auth) {
+                let baseAuth = JSON.parse(auth).tenantId
+            return baseAuth
+            } else {
+                return "0000-000-0000-000-00000-00-0000"
+            }
+        })
 
         const getChurchProfile = async() => {
-            let getTenantId = localStorage.getItem('baseAuth')
-            let tenantId = JSON.parse(getTenantId)
-            tenantID.value = tenantId.tenantId
             try {
-                let res = await axios.get(`/GetChurchProfileById?tenantId=${tenantId.tenantId}`)
+                let res = await axios.get(`/GetChurchProfileById?tenantId=${tenantID.value}`)
                 console.log(res)
                 churchLogo.value = res.data.returnObject.logo
             }

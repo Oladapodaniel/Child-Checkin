@@ -283,9 +283,12 @@ export default {
             let baseAuth = JSON.parse(getBaseAuth)
             console.log(baseAuth)
             try {
-                const res = await axios.get(`/api/Family/family?personId=${baseAuth.checkinPerson}`)
-                familyDetails.value = res.data
-                getAttendanceAnalytics(res.data.id)
+                const res = await axios.get(`/api/Family/getfamilybymemberid?personId=${baseAuth.checkinPerson}`)
+                console.log(res, 'hereee')
+                if (res.data) {
+                    familyDetails.value = res.data
+                    getAttendanceAnalytics(res.data.id)
+                }
                 console.log(res.data)
                 console.log(familyDetails.value.familyMembers)
                 loading.value = false

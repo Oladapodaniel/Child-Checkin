@@ -8,6 +8,7 @@
 
 <style>
 @import "./styles/style.css";
+@import "./styles/element-plus-styles.css";
 /* #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

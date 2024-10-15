@@ -1,11 +1,11 @@
 <template>
     <div class="container-wide container-top">
-        <div class="row">
+        <div class="row" v-if="eventDetails.length > 0">
             <div class="col-12 event-header">Event</div>
             <div class="col-12 mt-5 checkin-text">Upcoming Events</div>
+            <div class="col-12">{{ formatDate(new Date().toISOString()) }}</div>
         </div>
         <div class="row mt-3">
-            <div class="col-12">{{ formatDate(new Date().toISOString()) }}</div>
             <div v-if="loading" class="text-center col-12">
                 <div class=" mt-5">
                     <ProgressSpinner style="width: 50px" />
@@ -32,6 +32,9 @@
 
                 </div>
             </div>
+        </div>
+        <div v-if="eventDetails.length === 0 && !loading" class="mt-5">
+            <el-empty description="No upcoming event yet." />
         </div>
     </div>
 </template>

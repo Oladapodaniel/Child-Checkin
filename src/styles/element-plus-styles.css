@@ -1,0 +1,43 @@
+.el-table--border .el-table__inner-wrapper:after, .el-table--border:after, .el-table--border:before, .el-table__inner-wrapper:before {
+    background-color: transparent !important;
+}
+
+.el-table .el-table__cell {
+    z-index: unset !important;
+    /* border: 1px solid red !important; */
+}
+
+/* Error Confirm modal */
+
+.el-overlay-message-box[aria-label="Confirm delete"] .el-message-box {
+    border: none !important;
+    border-radius: 10px 10px 0 0;
+    padding: 0 !important;
+  }
+  
+  .el-overlay-message-box[aria-label="Confirm delete"] .el-message-box__header {
+    background: #f56c6c;
+    margin-bottom: 20px;
+    padding: 10px;
+  }
+  
+  .el-overlay-message-box[aria-label="Confirm delete"] .el-message-box__title,
+  .el-overlay-message-box[aria-label="Confirm delete"] .el-icon.el-message-box__close {
+    color: #ffffff !important
+  }
+  
+  .el-overlay-message-box[aria-label="Confirm delete"] .el-button {
+    border-radius: 25px;
+    margin-bottom: 10px;
+  }
+  
+  .el-overlay-message-box[aria-label="Confirm delete"] .el-button.el-button--primary {
+    background: #f56c6c;
+    border: none;
+    outline: none;
+    margin-bottom: 10px;
+  }
+
+  .button-text button.el-button {
+    font-weight: 400 !important;
+  }

@@ -8,6 +8,8 @@ import ToastService from 'primevue/toastservice';
 import ConfirmationService from 'primevue/confirmationservice';
 import Toast from 'primevue/toast'
 import ConfirmDialog from 'primevue/confirmdialog';
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
 
 import Checkbox from 'primevue/checkbox';
 import axios from "./gateway/backendapi";
@@ -37,7 +39,7 @@ axios.interceptors.request.use((config) => {
 
   const app = createApp(App)
   
-  app.use(ConfirmationService).use(router).use(ToastService).use(PrimeVue).mount('#app')
+  app.use(ConfirmationService).use(router).use(ToastService).use(PrimeVue).use(ElementPlus).mount('#app')
 
 
 app.component('Dialog', Dialog);

@@ -332,7 +332,7 @@ export default {
             let getBaseAuth = localStorage.getItem('baseAuth')
             let baseAuth = JSON.parse(getBaseAuth)
             try {
-                const res = await axios.get(`/api/Family/family?personId=${baseAuth.checkinPerson}`)
+                const res = await axios.get(`/api/Family/getfamilybymemberid?personId=${baseAuth.checkinPerson}`)
                 console.log(res)
                 uniqueCode.value = res.data.uniqueCode
                 familyDetails.value = res.data

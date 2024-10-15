@@ -4,7 +4,6 @@
             <div class="row">
               <div class="col-12 header1">Profile</div>
 
-
               <div class=" col-12 col-md-4 imagefolder d-block d-md-none">
                       <div class="grey-bg light-grey-bg mt-5 py-2 image1">
                         <div class="person-img mt-3">
@@ -189,7 +188,6 @@ import { useToast } from "primevue/usetoast";
           const getFamilyRoles = async () => {
             try {
                 let { data } = await axios.get('/getfamilyroles')
-                console.log(data)
                 roles.value = data.result
             }
             catch (err) {
@@ -202,24 +200,26 @@ import { useToast } from "primevue/usetoast";
             let getBaseAuth = localStorage.getItem('baseAuth')
             let baseAuth = JSON.parse(getBaseAuth)
             try {
-                const res = await axios.get(`/api/Family/family?personId=${baseAuth.checkinPerson}`)
+                const res = await axios.get(`/api/Family/getfamilybymemberid?personId=${baseAuth.checkinPerson}`)
                 console.log(res)
                 familyId.value = res.data.id
                 oldCode.value = res.data.uniqueCode
                 newCode.value = res.data.uniqueCode
-                if (res.data.father) {
-                  role.value = "father"
-                  // profile.value = res.data.father
-                  profile.value.firstName = res.data.father.firstName
-                  profile.value.lastName = res.data.father.lastName
-                  profile.value.homePhone = res.data.homePhone ? res.data.homePhone : res.data.father.mobilePhone
-                } else {
-                  role.value = "mother"
-                  // profile.value = res.data.mother
-                  profile.value.firstName = res.data.mother.firstName
-                  profile.value.lastName = res.data.mother.lastName
-                  profile.value.homePhone = res.data.mother.mobilePhone
-                  profile.value.homeAddress = res.data.homePhone ? res.data.homePhone : res.data.mother.homeAddress
+                if (res.data) {
+                  if (res.data.father) {
+                    role.value = "father"
+                    // profile.value = res.data.father
+                    profile.value.firstName = res.data.father.firstName
+                    profile.value.lastName = res.data.father.lastName
+                    profile.value.homePhone = res.data.homePhone ? res.data.homePhone : res.data.father.mobilePhone
+                  } else {
+                    role.value = "mother"
+                    // profile.value = res.data.mother
+                    profile.value.firstName = res.data.mother.firstName
+                    profile.value.lastName = res.data.mother.lastName
+                    profile.value.homePhone = res.data.mother.mobilePhone
+                    profile.value.homeAddress = res.data.homePhone ? res.data.homePhone : res.data.mother.homeAddress
+                  }
                 }
                 profile.value.email = res.data.email
 
@@ -262,7 +262,6 @@ import { useToast } from "primevue/usetoast";
             }
             axios.put("/api/Family/editProfile", updateProfile)
             .then(res => {
-              console.log(res)
               toast.add({
                     severity: "success",
                     summary: "Successful",
@@ -280,7 +279,6 @@ import { useToast } from "primevue/usetoast";
             formData.append("mediaFileImage", image.value)
             axios.post("/api/Media/UploadProfilePicture", formData)
             .then(res => {
-              console.log(res)
               profile.value.pictureUrl = res.data.pictureUrl
               url.value = URL.createObjectURL(image.value);
             })
@@ -300,7 +298,7 @@ import { useToast } from "primevue/usetoast";
             console.log(body)
             try {
               let { data } = await axios.put("/api/Family/changeUniqueCode", body)
-              console.log(data)
+              
               if (data.status) {
                 oldCode.value = newCode.value
                 toast.add({
